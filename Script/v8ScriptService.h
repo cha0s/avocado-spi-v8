@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8SCRIPTSERVICE_H
 #define AVOCADO_V8SCRIPTSERVICE_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 
-#include "main/Script/ScriptService.h"
+#include "core/Script/ScriptService.h"
 
 namespace avo {
 

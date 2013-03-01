@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8SAMPLE_H
 #define AVOCADO_V8SAMPLE_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Sound/Sample.h"
+#include "core/Sound/Sample.h"
 
 namespace avo {
 

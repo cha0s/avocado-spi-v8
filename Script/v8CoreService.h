@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8CORESERVICE_H
 #define AVOCADO_V8CORESERVICE_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Core/CoreService.h"
+#include "core/Core/CoreService.h"
 
 namespace avo {
 

@@ -1,9 +1,9 @@
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "v8ScriptService.h"
 
-#include "main/FS.h"
-#include "main/Script/Script.h"
+#include "core/FS.h"
+#include "core/Script/Script.h"
 #include "v8Script.h"
 
 #include "v8CoreService.h"

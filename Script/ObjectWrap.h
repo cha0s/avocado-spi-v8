@@ -1,7 +1,7 @@
 #ifndef AVOCADO_OBJECTWRAP_H
 #define AVOCADO_OBJECTWRAP_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include <assert.h>

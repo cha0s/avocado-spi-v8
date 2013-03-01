@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8WINDOW_H
 #define AVOCADO_V8WINDOW_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Graphics/Window.h"
+#include "core/Graphics/Window.h"
 
 namespace avo {
 

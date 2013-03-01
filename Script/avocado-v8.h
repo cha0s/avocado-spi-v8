@@ -1,7 +1,7 @@
 #ifndef AVOCADO_V8_H
 #define AVOCADO_V8_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include <string>
 

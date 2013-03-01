@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8SOUNDSERVICE_H
 #define AVOCADO_V8SOUNDSERVICE_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Sound/SoundService.h"
+#include "core/Sound/SoundService.h"
 
 namespace avo {
 

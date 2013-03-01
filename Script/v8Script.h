@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8SCRIPT_H
 #define AVOCADO_V8SCRIPT_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 
-#include "main/Script/Script.h"
+#include "core/Script/Script.h"
 
 namespace avo {
 

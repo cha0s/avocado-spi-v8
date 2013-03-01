@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8GRAPHICSSERVICE_H
 #define AVOCADO_V8GRAPHICSSERVICE_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Graphics/GraphicsService.h"
+#include "core/Graphics/GraphicsService.h"
 
 namespace avo {
 

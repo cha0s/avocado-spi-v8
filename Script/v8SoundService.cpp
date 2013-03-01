@@ -1,8 +1,8 @@
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "v8SoundService.h"
 
-#include "main/SpiiLoader.h"
+#include "core/SpiiLoader.h"
 
 #include "v8Music.h"
 #include "v8Sample.h"

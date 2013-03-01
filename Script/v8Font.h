@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8FONT_H
 #define AVOCADO_V8FONT_H
 
-#include "main/avocado-global.h"
+#include "core/avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "main/Graphics/Font.h"
+#include "core/Graphics/Font.h"
 
 namespace avo {
 
