@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 
-#include "SPI/Abstract/Script/Script.h"
+#include "main/Script/Script.h"
 
 namespace avo {
 

@@ -3,7 +3,7 @@
 #include "v8ScriptService.h"
 
 #include "main/FS.h"
-#include "SPI/Abstract/Script/Script.h"
+#include "main/Script/Script.h"
 #include "v8Script.h"
 
 #include "v8CoreService.h"

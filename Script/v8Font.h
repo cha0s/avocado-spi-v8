@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "SPI/Abstract/Graphics/Font.h"
+#include "main/Graphics/Font.h"
 
 namespace avo {
 

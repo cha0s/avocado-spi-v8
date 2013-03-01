@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "SPI/Abstract/Timing/TimingService.h"
+#include "main/Timing/TimingService.h"
 
 namespace avo {
 

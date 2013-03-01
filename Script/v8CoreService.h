@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "SPI/Abstract/Core/CoreService.h"
+#include "main/Core/CoreService.h"
 
 namespace avo {
 

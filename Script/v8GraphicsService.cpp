@@ -2,7 +2,7 @@
 
 #include "v8GraphicsService.h"
 
-#include "SPI/Abstract/SpiiLoader.h"
+#include "main/SpiiLoader.h"
 
 #include "v8Font.h"
 #include "v8Image.h"

@@ -2,7 +2,7 @@
 
 #include "v8TimingService.h"
 
-#include "SPI/Abstract/SpiiLoader.h"
+#include "main/SpiiLoader.h"
 
 #include "v8Counter.h"
 

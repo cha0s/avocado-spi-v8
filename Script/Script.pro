@@ -1,6 +1,6 @@
 TARGET = ScriptService-v8
 
-include(../../Abstract/Script/Script.pri)
+include(../../../main/Script/Script.pri)
 
 SOURCES += \
 	\

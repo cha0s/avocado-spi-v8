@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "SPI/Abstract/Graphics/Window.h"
+#include "main/Graphics/Window.h"
 
 namespace avo {
 

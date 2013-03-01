@@ -3,7 +3,7 @@
 
 #include "main/avocado-global.h"
 
-#include "SPI/Abstract/Sound/Music.h"
+#include "main/Sound/Music.h"
 #include "ObjectWrap.h"
 #include "avocado-v8.h"
 

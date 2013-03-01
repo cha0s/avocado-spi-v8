@@ -5,7 +5,7 @@
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "SPI/Abstract/Sound/SoundService.h"
+#include "main/Sound/SoundService.h"
 
 namespace avo {
 

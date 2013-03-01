@@ -2,7 +2,7 @@
 
 #include "v8SoundService.h"
 
-#include "SPI/Abstract/SpiiLoader.h"
+#include "main/SpiiLoader.h"
 
 #include "v8Music.h"
 #include "v8Sample.h"

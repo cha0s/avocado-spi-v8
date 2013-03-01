@@ -2,7 +2,7 @@
 
 #include "v8CoreService.h"
 
-#include "SPI/Abstract/SpiiLoader.h"
+#include "main/SpiiLoader.h"
 
 #ifdef AVOCADO_NODE
 #include <node.h>
