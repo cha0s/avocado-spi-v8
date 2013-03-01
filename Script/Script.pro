@@ -2,6 +2,8 @@ TARGET = ScriptService-v8
 
 include(../../../core/Script/Script.pri)
 
+DEFINES += AVOCADO
+
 SOURCES += \
 	\
 	avocado-v8.cpp ObjectWrap.cpp \
