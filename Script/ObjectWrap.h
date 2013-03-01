@@ -6,7 +6,7 @@
 #include "avocado-v8.h"
 #include <assert.h>
 
-#if NODE_MAJOR_VERSION == 0 && NODE_MINOR_VERSION <= 8
+#if !defined AVOCADO && NODE_MAJOR_VERSION == 0 && NODE_MINOR_VERSION <= 8
 # define GetAlignedPointerFromInternalField GetPointerFromInternalField
 # define SetAlignedPointerInInternalField SetPointerInInternalField
 #endif
