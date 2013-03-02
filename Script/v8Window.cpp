@@ -42,7 +42,29 @@ v8::Handle<v8::Value> v8Window::New(const v8::Arguments &args) {
 	HandleScope scope;
 
 	try {
-		new v8Window(args.Holder());
+		v8Window *windowWrapper = new v8Window(args.Holder());
+
+		std::map<std::string, int>::iterator i;
+
+		Handle<Object> Mouse = Object::New();
+		std::map<std::string, int> MouseButtons = Window::Event::MouseButtons();
+		for (i = MouseButtons.begin(); i != MouseButtons.end(); i++) {
+			Mouse->Set(
+				String::NewSymbol(i->first.c_str()),
+				Integer::New(i->second)
+			);
+		}
+		args.Holder()->Set(String::NewSymbol("Mouse"), Mouse);
+
+		Handle<Object> KeyCode = Object::New();
+		std::map<std::string, int> KeyCodes = Window::Event::KeyCodes();
+		for (i = KeyCodes.begin(); i != KeyCodes.end(); i++) {
+			KeyCode->Set(
+				String::NewSymbol(i->first.c_str()),
+				Integer::New(i->second)
+			);
+		}
+		args.Holder()->Set(String::NewSymbol("KeyCode"), KeyCode);
 	}
 	catch (std::exception &e) {
 

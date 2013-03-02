@@ -16,12 +16,6 @@ using namespace v8;
 
 namespace avo {
 
-#define SPECIAL_KEY(Keys, keys, key)                \
-    Keys->Set(                   \
-        String::New(#key),              \
-        Integer::New(keys.key) \
-    );
-
 avo::SpiiLoader<avo::GraphicsService> graphicsServiceSpiiLoader;
 
 v8GraphicsService::v8GraphicsService(Handle<Object> wrapper)
