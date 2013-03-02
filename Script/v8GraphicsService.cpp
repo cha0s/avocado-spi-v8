@@ -59,7 +59,7 @@ v8::Handle<v8::Value> v8GraphicsService::New(const v8::Arguments &args) {
 	HandleScope scope;
 
 	try {
-		v8GraphicsService *graphicsServiceWrapper = new v8GraphicsService(args.Holder());
+		new v8GraphicsService(args.Holder());
 	}
 	catch (std::exception &e) {
 
