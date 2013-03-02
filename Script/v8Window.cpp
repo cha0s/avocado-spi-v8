@@ -35,6 +35,28 @@ void v8Window::initialize(Handle<Object> target) {
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setWindowTitle", v8Window::SetWindowTitle);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%size", v8Window::Size);
 
+	std::map<std::string, int>::iterator i;
+
+	Handle<Object> Mouse = Object::New();
+	std::map<std::string, int> MouseButtons = Window::Event::MouseButtons();
+	for (i = MouseButtons.begin(); i != MouseButtons.end(); i++) {
+		Mouse->Set(
+			String::NewSymbol(i->first.c_str()),
+			Integer::New(i->second)
+		);
+	}
+	constructor_template->Set(String::NewSymbol("Mouse"), Mouse);
+
+	Handle<Object> KeyCode = Object::New();
+	std::map<std::string, int> KeyCodes = Window::Event::KeyCodes();
+	for (i = KeyCodes.begin(); i != KeyCodes.end(); i++) {
+		KeyCode->Set(
+			String::NewSymbol(i->first.c_str()),
+			Integer::New(i->second)
+		);
+	}
+	constructor_template->Set(String::NewSymbol("KeyCode"), KeyCode);
+
 	target->Set(String::NewSymbol("Window"), constructor_template->GetFunction());
 }
 
@@ -42,29 +64,7 @@ v8::Handle<v8::Value> v8Window::New(const v8::Arguments &args) {
 	HandleScope scope;
 
 	try {
-		v8Window *windowWrapper = new v8Window(args.Holder());
-
-		std::map<std::string, int>::iterator i;
-
-		Handle<Object> Mouse = Object::New();
-		std::map<std::string, int> MouseButtons = Window::Event::MouseButtons();
-		for (i = MouseButtons.begin(); i != MouseButtons.end(); i++) {
-			Mouse->Set(
-				String::NewSymbol(i->first.c_str()),
-				Integer::New(i->second)
-			);
-		}
-		args.Holder()->Set(String::NewSymbol("Mouse"), Mouse);
-
-		Handle<Object> KeyCode = Object::New();
-		std::map<std::string, int> KeyCodes = Window::Event::KeyCodes();
-		for (i = KeyCodes.begin(); i != KeyCodes.end(); i++) {
-			KeyCode->Set(
-				String::NewSymbol(i->first.c_str()),
-				Integer::New(i->second)
-			);
-		}
-		args.Holder()->Set(String::NewSymbol("KeyCode"), KeyCode);
+		new v8Window(args.Holder());
 	}
 	catch (std::exception &e) {
 
