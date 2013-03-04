@@ -62,12 +62,26 @@ std::string v8ScriptService::preCompileCode(const std::string &code, const boost
 	HandleScope scope;
 
 	std::string filenameString = filename.string();
+	bool isCoffee = false;
+	bool isLiterateCoffee = false;
 
-	// Compile coffeescript to JS.
 	if (boost::regex_search(
 		filenameString,
-		regex(".*(\\.coffee|\\.litcoffee)$")
+		regex(".*\\.coffee$")
 	)) {
+		isCoffee = true;
+	}
+
+	if (boost::regex_search(
+		filenameString,
+		regex(".*\\.litcoffee$")
+	)) {
+		isCoffee = true;
+		isLiterateCoffee = true;
+	}
+
+	// Compile coffeescript to JS.
+	if (isCoffee) {
 
 		std::cerr << "Precompiling " << filenameString << "..." << std::endl;
 
@@ -80,6 +94,7 @@ std::string v8ScriptService::preCompileCode(const std::string &code, const boost
 		options->Set(String::New("filename"), String::New(
 			filenameString.c_str()
 		));
+		options->Set(String::New("literate"), Boolean::New(isLiterateCoffee));
 		Handle<Value> args[] = {
 			String::New(code.c_str()),
 			options
