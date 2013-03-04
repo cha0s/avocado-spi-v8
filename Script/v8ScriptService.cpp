@@ -1,5 +1,7 @@
 #include "core/avocado-global.h"
 
+#include <boost/regex.hpp>
+
 #include "v8ScriptService.h"
 
 #include "core/FS.h"
@@ -11,6 +13,7 @@
 #include "v8SoundService.h"
 #include "v8TimingService.h"
 
+using namespace boost;
 using namespace v8;
 using namespace std;
 
@@ -61,7 +64,10 @@ std::string v8ScriptService::preCompileCode(const std::string &code, const boost
 	std::string filenameString = filename.string();
 
 	// Compile coffeescript to JS.
-	if (std::string::npos != filenameString.find(".coffee")) {
+	if (boost::regex_search(
+		filenameString,
+		regex(".*(\\.coffee|\\.litcoffee)$")
+	)) {
 
 		std::cerr << "Precompiling " << filenameString << "..." << std::endl;
 
