@@ -83,8 +83,6 @@ std::string v8ScriptService::preCompileCode(const std::string &code, const boost
 	// Compile coffeescript to JS.
 	if (isCoffee) {
 
-		std::cerr << "Precompiling " << filenameString << "..." << std::endl;
-
 		TryCatch exception;
 
 		Handle<Object> CoffeeScript = Context::GetCurrent()->Global()->Get(String::New("CoffeeScript")).As<Object>();
@@ -139,8 +137,6 @@ Script *v8ScriptService::scriptFromCode(const std::string &code, const boost::fi
 	if (NULL == v8ScriptFactory) {
 		throw script_compilation_error("Concrete v8 factory mismatch!");
 	}
-
-	std::cerr << "Compiling " << filename.string() << "..." << std::endl;
 
 	// Instantiate our script and return it.
 	return v8ScriptFactory->create(script);
