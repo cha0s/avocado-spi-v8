@@ -49,6 +49,7 @@ void v8Image::initialize(Handle<Object> target) {
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%saveToFile"   , v8Image::SaveToFile   );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setPixelAt"   , v8Image::SetPixelAt   );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%width"        , v8Image::Width        );
+	V8_SET_PROTOTYPE_METHOD(constructor_template, "%uri"          , v8Image::Uri          );
 
 	V8_SET_METHOD(constructor_template, "%load", v8Image::Load);
 
@@ -460,6 +461,20 @@ v8::Handle<v8::Value> v8Image::Width(const v8::Arguments &args) {
 	}
 
 	return scope.Close(Integer::New(imageWrapper->image->width()));
+}
+
+v8::Handle<v8::Value> v8Image::Uri(const v8::Arguments &args) {
+	HandleScope scope;
+
+	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
+
+	if (NULL == imageWrapper) {
+		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
+			"Image::uri(): NULL Holder."
+		)));
+	}
+
+	return scope.Close(String::New(imageWrapper->image->uri().c_str()));
 }
 
 Persistent<FunctionTemplate> v8Image::constructor_template;

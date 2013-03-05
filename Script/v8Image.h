@@ -53,6 +53,7 @@ private:
 	static v8::Handle<v8::Value> SaveToFile(const v8::Arguments &args);
 	static v8::Handle<v8::Value> SetPixelAt(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Width(const v8::Arguments &args);
+	static v8::Handle<v8::Value> Uri(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Load(const v8::Arguments &args);
 
 	static v8::Persistent<v8::FunctionTemplate> constructor_template;
