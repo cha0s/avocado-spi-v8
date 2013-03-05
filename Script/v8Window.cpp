@@ -236,6 +236,19 @@ v8::Handle<v8::Value> v8Window::PollEvents(const v8::Arguments &args) {
 			}
 		}
 
+		if (event.mouseWheelMove.size() > 0) {
+			argv[0] = String::New("mouseWheelMove");
+			for (unsigned int i = 0; i < event.mouseWheelMove.size(); i++) {
+				inputEvent = Object::New();
+				inputEvent->Set(
+					String::NewSymbol("delta"),
+					Integer::New(event.mouseWheelMove[i].delta)
+				);
+				argv[1] = inputEvent;
+				emitFunction->Call(holder, 2, argv);
+			}
+		}
+
 		if (event.mouseMove.size() > 0) {
 			argv[0] = String::New("mouseMove");
 			for (unsigned int i = 0; i < event.mouseMove.size(); i++) {
