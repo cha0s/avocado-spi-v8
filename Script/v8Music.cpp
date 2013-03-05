@@ -116,15 +116,18 @@ v8::Handle<v8::Value> v8Music::Load(const v8::Arguments &args) {
 		);
 
 		Handle<Value> argv[] = {
+			Null(),
 			music
 		};
-		fn->Call(fn, 1, argv);
+		fn->Call(fn, 2, argv);
 	}
 	catch (std::exception &e) {
 
-		return ThrowException(
-			v8::Exception::Error(String::New(e.what()))
-		);
+		Handle<Value> argv[] = {
+			v8::Exception::Error(String::New(e.what())),
+			Null()
+		};
+		fn->Call(fn, 2, argv);
 	}
 
 	return Undefined();

@@ -143,40 +143,25 @@ v8::Handle<v8::Value> v8Image::Load(const v8::Arguments &args) {
 
 		Handle<Object> image;
 
-		if (args[0]->IsString()) {
-
-			image = v8Image::New(
-				Image::manager.load(
-					V8::stringToStdString(args[0]->ToString())
-				)
-			);
-		}
-		else {
-
-			unsigned int length = args[0].As<Object>()->Get(
-				String::NewSymbol("length")
-			)->Uint32Value();
-
-			unsigned char data[length];
-			for (unsigned int i = 0; i < length; ++i) {
-				data[i] = args[0].As<Object>()->Get(i)->Int32Value();
-			}
-
-			image = v8Image::New(
-				Image::factoryManager.instance()->create(data, length)
-			);
-		}
+		image = v8Image::New(
+			Image::manager.load(
+				V8::stringToStdString(args[0]->ToString())
+			)
+		);
 
 		Handle<Value> argv[] = {
+			Null(),
 			image
 		};
-		fn->Call(fn, 1, argv);
+		fn->Call(fn, 2, argv);
 	}
 	catch (std::exception &e) {
 
-		return ThrowException(
-			v8::Exception::Error(String::New(e.what()))
-		);
+		Handle<Value> argv[] = {
+			v8::Exception::Error(String::New(e.what())),
+			Null()
+		};
+		fn->Call(fn, 2, argv);
 	}
 
 	return Undefined();
