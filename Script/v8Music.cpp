@@ -14,9 +14,7 @@ v8Music::v8Music(Handle<Object> wrapper, Music *music)
 
 		this->music = Music::factoryManager.instance()->create();
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			this->music->sizeInBytes()
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(this->music->sizeInBytes());
 
 		owns = true;
 	}
@@ -34,9 +32,7 @@ void v8Music::releaseMusic() {
 
 	if (owns) {
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			-size
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 
 		delete music;
 	}
@@ -44,9 +40,7 @@ void v8Music::releaseMusic() {
 
 		if (Music::manager.release(music->uri())) {
 
-			::V8::AdjustAmountOfExternalAllocatedMemory(
-				-size
-			);
+			::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 		}
 	}
 }

@@ -14,9 +14,7 @@ v8Image::v8Image(Handle<Object> wrapper, Image *image)
 
 		this->image = Image::factoryManager.instance()->create();
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			this->image->sizeInBytes()
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(this->image->sizeInBytes());
 
 		owns = true;
 	}
@@ -66,9 +64,7 @@ void v8Image::releaseImage() {
 
 	if (owns) {
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			-size
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 
 		delete image;
 	}
@@ -76,9 +72,7 @@ void v8Image::releaseImage() {
 
 		if (Image::manager.release(image->uri())) {
 
-			::V8::AdjustAmountOfExternalAllocatedMemory(
-				-size
-			);
+			::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 		}
 	}
 }

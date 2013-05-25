@@ -15,9 +15,7 @@ v8Font::v8Font(Handle<Object> wrapper, Font *font)
 
 		this->font = Font::factoryManager.instance()->create();
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			this->font->sizeInBytes()
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(this->font->sizeInBytes());
 
 		owns = true;
 	}
@@ -59,9 +57,7 @@ void v8Font::releaseFont() {
 
 	if (owns) {
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			-size
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 
 		delete font;
 	}
@@ -69,9 +65,7 @@ void v8Font::releaseFont() {
 
 		if (Font::manager.release(font->uri())) {
 
-			::V8::AdjustAmountOfExternalAllocatedMemory(
-				-size
-			);
+			::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 		}
 	}
 }

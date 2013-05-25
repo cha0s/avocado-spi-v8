@@ -14,9 +14,7 @@ v8Sample::v8Sample(Handle<Object> wrapper, Sample *sample)
 
 		this->sample = Sample::factoryManager.instance()->create();
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			this->sample->sizeInBytes()
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(this->sample->sizeInBytes());
 
 		owns = true;
 	}
@@ -34,9 +32,7 @@ void v8Sample::releaseSample() {
 
 	if (owns) {
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(
-			-size
-		);
+		::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 
 		delete sample;
 	}
@@ -44,9 +40,7 @@ void v8Sample::releaseSample() {
 
 		if (Sample::manager.release(sample->uri())) {
 
-			::V8::AdjustAmountOfExternalAllocatedMemory(
-				-size
-			);
+			::V8::AdjustAmountOfExternalAllocatedMemory(-size);
 		}
 	}
 }
