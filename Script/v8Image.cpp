@@ -209,7 +209,12 @@ v8::Handle<v8::Value> v8Image::Uri(const v8::Arguments &args) {
 		)));
 	}
 
-	return scope.Close(String::New(imageWrapper->image->uri().c_str()));
+	return scope.Close(String::New(
+		FS::unqualifyPath(
+			FS::resourceRoot(),
+			imageWrapper->image->uri()
+		).c_str()
+	));
 }
 
 Persistent<FunctionTemplate> v8Image::constructor_template;
