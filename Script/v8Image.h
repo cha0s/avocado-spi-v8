@@ -35,23 +35,14 @@ public:
 
 private:
 
-	v8Image(v8::Handle<v8::Object> wrapper, Image *image = NULL);
+	v8Image(v8::Handle<v8::Object> wrapper);
 
 	void releaseImage();
 
 	static v8::Handle<v8::Value> New(const v8::Arguments &args);
 
-	static v8::Handle<v8::Value> Display(const v8::Arguments &args);
-	static v8::Handle<v8::Value> DrawFilledBox(const v8::Arguments &args);
-	static v8::Handle<v8::Value> DrawCircle(const v8::Arguments &args);
-	static v8::Handle<v8::Value> DrawLine(const v8::Arguments &args);
-	static v8::Handle<v8::Value> DrawLineBox(const v8::Arguments &args);
-	static v8::Handle<v8::Value> Fill(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Height(const v8::Arguments &args);
-	static v8::Handle<v8::Value> PixelAt(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Render(const v8::Arguments &args);
-	static v8::Handle<v8::Value> SaveToFile(const v8::Arguments &args);
-	static v8::Handle<v8::Value> SetPixelAt(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Width(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Uri(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Load(const v8::Arguments &args);

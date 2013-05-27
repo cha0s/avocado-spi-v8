@@ -1,5 +1,6 @@
 #include "core/avocado-global.h"
 
+#include "v8Canvas.h"
 #include "v8Font.h"
 #include "v8Image.h"
 
@@ -145,7 +146,7 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 		)));
 	}
 
-	v8Image *destination = ObjectWrap::Unwrap<v8Image>(args[1]->ToObject());
+	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[1]->ToObject());
 
 	if (NULL == destination) {
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
@@ -159,7 +160,7 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 	fontWrapper->font->render(
 		position->Get(0)->Int32Value(),
 		position->Get(1)->Int32Value(),
-		destination->wrappedImage(),
+		destination->wrappedCanvas(),
 		V8::stringToStdString(args[2].As<String>()),
 		clip->Get(0)->Int32Value(),
 		clip->Get(1)->Int32Value(),

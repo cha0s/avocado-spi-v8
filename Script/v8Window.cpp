@@ -2,6 +2,7 @@
 
 #include "v8Window.h"
 
+#include "v8Canvas.h"
 #include "v8Image.h"
 
 using namespace v8;
@@ -307,13 +308,25 @@ v8::Handle<v8::Value> v8Window::Render(const v8::Arguments &args) {
 		)));
 	}
 
-	v8Image *source = ObjectWrap::Unwrap<v8Image>(args[0]->ToObject());
+	// This is kinda strange, but I can't think of a simpler way to handle
+	// dynamically accepting both Canvas and Image in a secure (e.g. not
+	// depending on (mutable) JavaScript state to determine which to use) way.
+	// We'll manually unwrap the internal pointer, and use RTTI to determine
+	// which class of instance we have been passed.
+	Handle<Object> instanceHandle = args[0]->ToObject();
 
-	if (NULL == source) {
+	if (instanceHandle.IsEmpty() || 0 == instanceHandle->InternalFieldCount()) {
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
 			"Window::render(): NULL source."
 		)));
 	}
+
+	ObjectWrap *instance = static_cast<ObjectWrap *>(
+		instanceHandle->GetAlignedPointerFromInternalField(0)
+	);
+
+	v8Canvas *sourceCanvas = dynamic_cast<v8Canvas *>(instance);
+	v8Image *sourceImage = dynamic_cast<v8Image *>(instance);
 
 	if (!args[1]->IsArray()) {
 		return ThrowException(v8::Exception::TypeError(String::NewSymbol(
@@ -323,13 +336,24 @@ v8::Handle<v8::Value> v8Window::Render(const v8::Arguments &args) {
 
 	Handle<Array> rectangle = args[1].As<Array>();
 
-	windowWrapper->window->render(
-		source->wrappedImage(),
-		rectangle->Get(0)->Int32Value(),
-		rectangle->Get(1)->Int32Value(),
-		rectangle->Get(2)->Int32Value(),
-		rectangle->Get(3)->Int32Value()
-	);
+	if (sourceImage) {
+		windowWrapper->window->render(
+			sourceImage->wrappedImage(),
+			rectangle->Get(0)->Int32Value(),
+			rectangle->Get(1)->Int32Value(),
+			rectangle->Get(2)->Int32Value(),
+			rectangle->Get(3)->Int32Value()
+		);
+	}
+	else {
+		windowWrapper->window->render(
+			sourceCanvas->wrappedCanvas(),
+			rectangle->Get(0)->Int32Value(),
+			rectangle->Get(1)->Int32Value(),
+			rectangle->Get(2)->Int32Value(),
+			rectangle->Get(3)->Int32Value()
+		);
+	}
 
 	return v8::Undefined();
 }

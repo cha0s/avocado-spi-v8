@@ -1,23 +1,21 @@
 #include "core/avocado-global.h"
 
+#include "v8Canvas.h"
 #include "v8Image.h"
 
 using namespace v8;
 
 namespace avo {
 
-v8Image::v8Image(Handle<Object> wrapper, Image *image)
-	: image(image)
+v8Image::v8Image(Handle<Object> wrapper)
+	: image(NULL)
 	, owns(false)
 {
-	if (NULL == this->image) {
+	this->image = Image::factoryManager.instance()->create();
 
-		this->image = Image::factoryManager.instance()->create();
+	::V8::AdjustAmountOfExternalAllocatedMemory(this->image->sizeInBytes());
 
-		::V8::AdjustAmountOfExternalAllocatedMemory(this->image->sizeInBytes());
-
-		owns = true;
-	}
+	owns = true;
 
 	Wrap(wrapper);
 }
@@ -35,17 +33,8 @@ void v8Image::initialize(Handle<Object> target) {
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);
 	constructor_template->SetClassName(String::NewSymbol("Image"));
 
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%display"      , v8Image::Display      );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%drawFilledBox", v8Image::DrawFilledBox);
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%drawCircle"   , v8Image::DrawCircle   );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%drawLineBox"  , v8Image::DrawLineBox  );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%drawLine"     , v8Image::DrawLine     );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%fill"         , v8Image::Fill         );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%height"       , v8Image::Height       );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%pixelAt"      , v8Image::PixelAt      );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%render"       , v8Image::Render       );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%saveToFile"   , v8Image::SaveToFile   );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setPixelAt"   , v8Image::SetPixelAt   );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%width"        , v8Image::Width        );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%uri"          , v8Image::Uri          );
 
@@ -81,26 +70,7 @@ v8::Handle<v8::Value> v8Image::New(const v8::Arguments &args) {
 	HandleScope scope;
 
 	try {
-
-		Image *image = NULL;
-
-		if (args.Length() > 0) {
-
-			int width, height;
-
-			if (args[0]->IsArray()) {
-				width = args[0].As<Array>()->Get(0)->Int32Value();
-				height = args[0].As<Array>()->Get(1)->Int32Value();
-			}
-			else {
-				width = args[0]->Uint32Value();
-				height = args[1]->Uint32Value();
-			}
-
-			image = Image::factoryManager.instance()->create(width, height);
-		}
-
-		new v8Image(args.Holder(), image);
+		new v8Image(args.Holder());
 	}
 	catch (std::exception &e) {
 
@@ -161,154 +131,6 @@ v8::Handle<v8::Value> v8Image::Load(const v8::Arguments &args) {
 	return Undefined();
 }
 
-v8::Handle<v8::Value> v8Image::Display(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::display(): NULL Holder."
-		)));
-	}
-
-	imageWrapper->image->display();
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::DrawCircle(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::drawCircle(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> position = args[0].As<Array>();
-
-	imageWrapper->image->drawCircle(
-		position->Get(0)->Int32Value(),
-		position->Get(1)->Int32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value(),
-		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
-		args[5]->Uint32Value(),
-		static_cast<Image::DrawMode>(args[6]->Uint32Value())
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::DrawFilledBox(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::drawFilledBox(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> dimensions = args[0].As<Array>();
-
-	imageWrapper->image->drawFilledBox(
-		dimensions->Get(0)->Int32Value(),
-		dimensions->Get(1)->Int32Value(),
-		dimensions->Get(2)->Int32Value(),
-		dimensions->Get(3)->Int32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value(),
-		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
-		static_cast<Image::DrawMode>(args[5]->Uint32Value())
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::DrawLine(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::drawLine(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> dimensions = args[0].As<Array>();
-
-	imageWrapper->image->drawLine(
-		dimensions->Get(0)->Int32Value(),
-		dimensions->Get(1)->Int32Value(),
-		dimensions->Get(2)->Int32Value(),
-		dimensions->Get(3)->Int32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value(),
-		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
-		static_cast<Image::DrawMode>(args[5]->Uint32Value())
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::DrawLineBox(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::drawLineBox(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> dimensions = args[0].As<Array>();
-
-	imageWrapper->image->drawLineBox(
-		dimensions->Get(0)->Int32Value(),
-		dimensions->Get(1)->Int32Value(),
-		dimensions->Get(2)->Int32Value(),
-		dimensions->Get(3)->Int32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value(),
-		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
-		static_cast<Image::DrawMode>(args[5]->Uint32Value())
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::Fill(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::fill(): NULL Holder."
-		)));
-	}
-
-	imageWrapper->image->fill(
-		args[0]->Uint32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value(),
-		args[3]->Uint32Value()
-	);
-
-	return v8::Undefined();
-}
-
 v8::Handle<v8::Value> v8Image::Height(const v8::Arguments &args) {
 	HandleScope scope;
 
@@ -325,25 +147,6 @@ v8::Handle<v8::Value> v8Image::Height(const v8::Arguments &args) {
 	);
 }
 
-v8::Handle<v8::Value> v8Image::PixelAt(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::pixelAt(): NULL Holder."
-		)));
-	}
-
-	return scope.Close(Integer::New(
-		imageWrapper->image->pixelAt(
-			args[0]->Uint32Value(),
-			args[1]->Uint32Value()
-		)
-	));
-}
-
 v8::Handle<v8::Value> v8Image::Render(const v8::Arguments &args) {
 	HandleScope scope;
 
@@ -358,7 +161,7 @@ v8::Handle<v8::Value> v8Image::Render(const v8::Arguments &args) {
 	Handle<Array> dimensions = args[4].As<Array>();
 	Handle<Array> position = args[0].As<Array>();
 
-	v8Image *destination = ObjectWrap::Unwrap<v8Image>(args[1]->ToObject());
+	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[1]->ToObject());
 
 	if (NULL == destination) {
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
@@ -369,60 +172,13 @@ v8::Handle<v8::Value> v8Image::Render(const v8::Arguments &args) {
 	imageWrapper->image->render(
 		position->Get(0)->Int32Value(),
 		position->Get(1)->Int32Value(),
-		destination->image,
+		destination->wrappedCanvas(),
 		args[2]->Int32Value(),
 		static_cast<Image::DrawMode>(args[3]->Int32Value()),
 		dimensions->Get(0)->Int32Value(),
 		dimensions->Get(1)->Int32Value(),
 		dimensions->Get(2)->Int32Value(),
 		dimensions->Get(3)->Int32Value()
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::SaveToFile(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::saveToFile(): NULL Holder."
-		)));
-	}
-
-	std::string filename = V8::stringToStdString(args[0].As<String>());
-
-	boost::filesystem::path parentPath = FS::qualifyPath(
-		FS::resourceRoot(),
-		boost::filesystem::path(
-			filename
-		).parent_path()
-	);
-
-	imageWrapper->image->saveToFile(
-		parentPath / boost::filesystem::path(filename).filename()
-	);
-
-	return v8::Undefined();
-}
-
-v8::Handle<v8::Value> v8Image::SetPixelAt(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::setPixelAt(): NULL Holder."
-		)));
-	}
-
-	imageWrapper->image->setPixelAt(
-		args[0]->Uint32Value(),
-		args[1]->Uint32Value(),
-		args[2]->Uint32Value()
 	);
 
 	return v8::Undefined();

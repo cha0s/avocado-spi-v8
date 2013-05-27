@@ -4,6 +4,7 @@
 
 #include "core/SpiiLoader.h"
 
+#include "v8Canvas.h"
 #include "v8Font.h"
 #include "v8Image.h"
 #include "v8Window.h"
@@ -44,6 +45,7 @@ void v8GraphicsService::initialize(Handle<Object> target) {
 
 	target->Set(String::NewSymbol("GraphicsService"), constructor_template->GetFunction());
 
+	avo::v8Canvas::initialize(target);
 	avo::v8Font::initialize(target);
 	avo::v8Image::initialize(target);
 	avo::v8Window::initialize(target);
