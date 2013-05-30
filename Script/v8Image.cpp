@@ -28,6 +28,7 @@ void v8Image::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+		V8::avocadoIsolate,
 		FunctionTemplate::New(v8Image::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);

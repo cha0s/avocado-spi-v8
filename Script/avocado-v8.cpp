@@ -13,6 +13,8 @@ namespace avo {
 
 namespace V8 {
 
+v8::Isolate* avocadoIsolate;
+
 std::string stringToStdString(v8::Handle<v8::String> value) {
   String::Utf8Value utf8_value(value);
 

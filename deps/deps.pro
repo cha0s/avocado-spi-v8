@@ -17,8 +17,8 @@ v8lib.commands += \
 	&& git apply --ignore-space-change --ignore-whitespace ../v8.patch \
 	; make dependencies \
 	&& make -j4 native \
-	&& cp out/native/obj.target/tools/gyp/libv8_base.a libv8-avocado.a \
-	&& cp out/native/obj.target/tools/gyp/libv8_snapshot.a libv8_snapshot-avocado.a; \ 
+	&& cp out/native/obj.target/tools/gyp/libv8_base*.a libv8-avocado.a \
+	&& cp out/native/obj.target/tools/gyp/libv8_snapshot*.a libv8_snapshot-avocado.a; \ 
 	cd ../..; \
 	echo "Done building v8.";
 	

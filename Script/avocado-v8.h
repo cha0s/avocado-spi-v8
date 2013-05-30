@@ -24,6 +24,11 @@ namespace avo {
  */
 namespace V8 {
 
+/**
+ * V8 requires an isolate in many places.
+ */
+extern v8::Isolate* avocadoIsolate;
+
 /** Take a JS value and convert it to JSON. This returns v8::Value and not
  *  v8::String because when JSON.stringify fails, we have to throw/return an
  *  exception. */

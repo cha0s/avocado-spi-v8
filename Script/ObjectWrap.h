@@ -56,11 +56,11 @@ protected:
 		// and the passed in wrapper is expecting an object pointer.
 		assert(handle->InternalFieldCount() > 0);
 		// Allocate and embed our object pointer.
-		handle_ = v8::Persistent<v8::Object>::New(handle);
+		handle_ = v8::Persistent<v8::Object>::New(V8::avocadoIsolate, handle);
 		handle_->SetAlignedPointerInInternalField(0, this);
 		// Mark it as 'weak' so GC will release it ASAP.
-		handle_.MakeWeak(this, WeakCallback);
-		handle_.MarkIndependent();
+		handle_.MakeWeak(V8::avocadoIsolate, this, WeakCallback);
+		handle_.MarkIndependent(V8::avocadoIsolate);
 	}
 
 	/** Keep our object around until GC releases it. */
@@ -68,7 +68,7 @@ protected:
 
 private:
 
-	static void WeakCallback(v8::Persistent<v8::Value> value, void *data);
+	static void WeakCallback(v8::Isolate* env, v8::Persistent<v8::Value> value, void *data);
 };
 
 }

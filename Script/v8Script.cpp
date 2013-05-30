@@ -18,7 +18,10 @@ v8Script::v8Script(v8::Handle<v8::Script> script)
 {
 	HandleScope scope;
 
-	this->script = Persistent<v8::Script>::New(script);
+	this->script = Persistent<v8::Script>::New(
+		V8::avocadoIsolate,
+		script
+	);
 }
 
 

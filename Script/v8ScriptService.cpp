@@ -38,11 +38,16 @@ v8ScriptService::v8ScriptService()
 
 	HandleScope scope;
 
+	V8::avocadoIsolate = Isolate::GetCurrent();
+
 	Handle<ObjectTemplate> global = ObjectTemplate::New();
 
 	global->Set(String::New("requires_"), ObjectTemplate::New());
 
-	context = Context::New(NULL, global);
+	context = Persistent<Context>::New(
+		V8::avocadoIsolate,
+		Context::New(V8::avocadoIsolate, NULL, global)
+	);
 
 	context->Enter();
 

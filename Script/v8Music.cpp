@@ -49,6 +49,7 @@ void v8Music::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+		V8::avocadoIsolate,
 		FunctionTemplate::New(v8Music::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);

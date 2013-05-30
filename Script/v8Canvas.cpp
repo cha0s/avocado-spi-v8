@@ -25,6 +25,7 @@ void v8Canvas::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+		V8::avocadoIsolate,
 		FunctionTemplate::New(v8Canvas::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);
