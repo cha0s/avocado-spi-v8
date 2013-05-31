@@ -147,7 +147,7 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 		)));
 	}
 
-	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[1]->ToObject());
+	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[2]->ToObject());
 
 	if (NULL == destination) {
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
@@ -156,13 +156,17 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 	}
 
 	Handle<Array> position = args[0].As<Array>();
-	Handle<Array> clip = args[3].As<Array>();
+	Handle<Array> clip = args[7].As<Array>();
 
 	fontWrapper->font->render(
 		position->Get(0)->Int32Value(),
 		position->Get(1)->Int32Value(),
 		destination->wrappedCanvas(),
-		V8::stringToStdString(args[2].As<String>()),
+		V8::stringToStdString(args[1].As<String>()),
+		position->Get(3)->Int32Value(),
+		position->Get(4)->Int32Value(),
+		position->Get(5)->Int32Value(),
+		position->Get(6)->Int32Value(),
 		clip->Get(0)->Int32Value(),
 		clip->Get(1)->Int32Value(),
 		clip->Get(2)->Int32Value(),
