@@ -161,8 +161,8 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 	fontWrapper->font->render(
 		position->Get(0)->Int32Value(),
 		position->Get(1)->Int32Value(),
-		destination->wrappedCanvas(),
 		V8::stringToStdString(args[1].As<String>()),
+		destination->wrappedCanvas(),
 		args[3]->Int32Value(),
 		args[4]->Int32Value(),
 		args[5]->Int32Value(),
