@@ -384,7 +384,7 @@ v8::Handle<v8::Value> v8Canvas::Uri(const v8::Arguments &args) {
 		)));
 	}
 
-	return scope.Close(String::New(canvasWrapper->canvas->uri().c_str()));
+	return scope.Close(String::New(canvasWrapper->canvas->uri().string().c_str()));
 }
 
 Persistent<FunctionTemplate> v8Canvas::constructor_template;

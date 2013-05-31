@@ -214,7 +214,7 @@ v8::Handle<v8::Value> v8Image::Uri(const v8::Arguments &args) {
 		FS::unqualifyPath(
 			FS::resourceRoot(),
 			imageWrapper->image->uri()
-		).c_str()
+		).string().c_str()
 	));
 }
 
