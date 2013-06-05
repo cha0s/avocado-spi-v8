@@ -85,7 +85,7 @@ v8::Handle<v8::Value> v8Sprite::RenderTo(const v8::Arguments &args) {
 
 	if (instanceHandle.IsEmpty() || 0 == instanceHandle->InternalFieldCount()) {
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Window::render(): NULL source."
+			"Sprite::render(): NULL destination."
 		)));
 	}
 
