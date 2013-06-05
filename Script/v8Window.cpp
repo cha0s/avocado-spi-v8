@@ -29,7 +29,6 @@ void v8Window::initialize(Handle<Object> target) {
 
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%display", v8Window::Display);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%pollEvents", v8Window::PollEvents);
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%render", v8Window::Render);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setFlags", v8Window::SetFlags);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setSize", v8Window::SetSize);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setMouseVisibility", v8Window::SetMouseVisibility);
@@ -59,6 +58,10 @@ void v8Window::initialize(Handle<Object> target) {
 	constructor_template->Set(String::NewSymbol("KeyCode"), KeyCode);
 
 	target->Set(String::NewSymbol("Window"), constructor_template->GetFunction());
+}
+
+Window *v8Window::wrappedWindow() {
+	return window;
 }
 
 v8::Handle<v8::Value> v8Window::New(const v8::Arguments &args) {
@@ -295,67 +298,6 @@ v8::Handle<v8::Value> v8Window::PollEvents(const v8::Arguments &args) {
 	}
 
 	return scope.Close(Undefined());
-}
-
-v8::Handle<v8::Value> v8Window::Render(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Window *windowWrapper = ObjectWrap::Unwrap<v8Window>(args.Holder());
-
-	if (NULL == windowWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Window::render(): NULL Holder."
-		)));
-	}
-
-	// This is kinda strange, but I can't think of a simpler way to handle
-	// dynamically accepting both Canvas and Image in a secure (e.g. not
-	// depending on (mutable) JavaScript state to determine which to use) way.
-	// We'll manually unwrap the internal pointer, and use RTTI to determine
-	// which class of instance we have been passed.
-	Handle<Object> instanceHandle = args[0]->ToObject();
-
-	if (instanceHandle.IsEmpty() || 0 == instanceHandle->InternalFieldCount()) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Window::render(): NULL source."
-		)));
-	}
-
-	ObjectWrap *instance = static_cast<ObjectWrap *>(
-		instanceHandle->GetAlignedPointerFromInternalField(0)
-	);
-
-	v8Canvas *sourceCanvas = dynamic_cast<v8Canvas *>(instance);
-	v8Image *sourceImage = dynamic_cast<v8Image *>(instance);
-
-	if (!args[1]->IsArray()) {
-		return ThrowException(v8::Exception::TypeError(String::NewSymbol(
-			"Window::render(): second argument not array."
-		)));
-	}
-
-	Handle<Array> rectangle = args[1].As<Array>();
-
-	if (sourceImage) {
-		windowWrapper->window->render(
-			sourceImage->wrappedImage(),
-			rectangle->Get(0)->Int32Value(),
-			rectangle->Get(1)->Int32Value(),
-			rectangle->Get(2)->Int32Value(),
-			rectangle->Get(3)->Int32Value()
-		);
-	}
-	else {
-		windowWrapper->window->render(
-			sourceCanvas->wrappedCanvas(),
-			rectangle->Get(0)->Int32Value(),
-			rectangle->Get(1)->Int32Value(),
-			rectangle->Get(2)->Int32Value(),
-			rectangle->Get(3)->Int32Value()
-		);
-	}
-
-	return v8::Undefined();
 }
 
 v8::Handle<v8::Value> v8Window::SetFlags(const v8::Arguments &args) {

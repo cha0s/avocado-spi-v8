@@ -39,7 +39,6 @@ void v8Canvas::initialize(Handle<Object> target) {
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%fill"         , v8Canvas::Fill         );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%height"       , v8Canvas::Height       );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%pixelAt"      , v8Canvas::PixelAt      );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%render"       , v8Canvas::Render       );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%saveToFile"   , v8Canvas::SaveToFile   );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%setPixelAt"   , v8Canvas::SetPixelAt   );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%width"        , v8Canvas::Width        );
@@ -129,7 +128,7 @@ v8::Handle<v8::Value> v8Canvas::DrawCircle(const v8::Arguments &args) {
 		args[3]->Uint32Value(),
 		args[4]->Uint32Value(),
 		args[5]->Uint32Value(),
-		static_cast<Canvas::DrawMode>(args[6]->Uint32Value())
+		static_cast<GraphicsService::BlendMode>(args[6]->Uint32Value())
 	);
 
 	return v8::Undefined();
@@ -157,7 +156,7 @@ v8::Handle<v8::Value> v8Canvas::DrawFilledBox(const v8::Arguments &args) {
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
 		args[4]->Uint32Value(),
-		static_cast<Canvas::DrawMode>(args[5]->Uint32Value())
+		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
 	return v8::Undefined();
@@ -185,7 +184,7 @@ v8::Handle<v8::Value> v8Canvas::DrawLine(const v8::Arguments &args) {
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
 		args[4]->Uint32Value(),
-		static_cast<Canvas::DrawMode>(args[5]->Uint32Value())
+		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
 	return v8::Undefined();
@@ -213,7 +212,7 @@ v8::Handle<v8::Value> v8Canvas::DrawLineBox(const v8::Arguments &args) {
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
 		args[4]->Uint32Value(),
-		static_cast<Canvas::DrawMode>(args[5]->Uint32Value())
+		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
 	return v8::Undefined();
@@ -273,43 +272,6 @@ v8::Handle<v8::Value> v8Canvas::PixelAt(const v8::Arguments &args) {
 			args[1]->Uint32Value()
 		)
 	));
-}
-
-v8::Handle<v8::Value> v8Canvas::Render(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Canvas *canvasWrapper = ObjectWrap::Unwrap<v8Canvas>(args.Holder());
-
-	if (NULL == canvasWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Canvas::render(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> dimensions = args[4].As<Array>();
-	Handle<Array> position = args[0].As<Array>();
-
-	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[1]->ToObject());
-
-	if (NULL == destination) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Canvas::render(): NULL destination."
-		)));
-	}
-
-	canvasWrapper->canvas->render(
-		position->Get(0)->Int32Value(),
-		position->Get(1)->Int32Value(),
-		destination->canvas,
-		args[2]->Int32Value(),
-		static_cast<Canvas::DrawMode>(args[3]->Int32Value()),
-		dimensions->Get(0)->Int32Value(),
-		dimensions->Get(1)->Int32Value(),
-		dimensions->Get(2)->Int32Value(),
-		dimensions->Get(3)->Int32Value()
-	);
-
-	return v8::Undefined();
 }
 
 v8::Handle<v8::Value> v8Canvas::SaveToFile(const v8::Arguments &args) {

@@ -42,7 +42,6 @@ private:
 	static v8::Handle<v8::Value> New(const v8::Arguments &args);
 
 	static v8::Handle<v8::Value> Height(const v8::Arguments &args);
-	static v8::Handle<v8::Value> Render(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Width(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Uri(const v8::Arguments &args);
 	static v8::Handle<v8::Value> Load(const v8::Arguments &args);

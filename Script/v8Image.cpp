@@ -35,7 +35,6 @@ void v8Image::initialize(Handle<Object> target) {
 	constructor_template->SetClassName(String::NewSymbol("Image"));
 
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%height"       , v8Image::Height       );
-	V8_SET_PROTOTYPE_METHOD(constructor_template, "%render"       , v8Image::Render       );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%width"        , v8Image::Width        );
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%uri"          , v8Image::Uri          );
 
@@ -146,43 +145,6 @@ v8::Handle<v8::Value> v8Image::Height(const v8::Arguments &args) {
 	return scope.Close(
 		Integer::New(imageWrapper->image->height())
 	);
-}
-
-v8::Handle<v8::Value> v8Image::Render(const v8::Arguments &args) {
-	HandleScope scope;
-
-	v8Image *imageWrapper = ObjectWrap::Unwrap<v8Image>(args.Holder());
-
-	if (NULL == imageWrapper) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::render(): NULL Holder."
-		)));
-	}
-
-	Handle<Array> dimensions = args[4].As<Array>();
-	Handle<Array> position = args[0].As<Array>();
-
-	v8Canvas *destination = ObjectWrap::Unwrap<v8Canvas>(args[1]->ToObject());
-
-	if (NULL == destination) {
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			"Image::render(): NULL destination."
-		)));
-	}
-
-	imageWrapper->image->render(
-		position->Get(0)->Int32Value(),
-		position->Get(1)->Int32Value(),
-		destination->wrappedCanvas(),
-		args[2]->Int32Value(),
-		static_cast<Image::DrawMode>(args[3]->Int32Value()),
-		dimensions->Get(0)->Int32Value(),
-		dimensions->Get(1)->Int32Value(),
-		dimensions->Get(2)->Int32Value(),
-		dimensions->Get(3)->Int32Value()
-	);
-
-	return v8::Undefined();
 }
 
 v8::Handle<v8::Value> v8Image::Width(const v8::Arguments &args) {

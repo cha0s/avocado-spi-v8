@@ -7,6 +7,7 @@
 #include "v8Canvas.h"
 #include "v8Font.h"
 #include "v8Image.h"
+#include "v8Sprite.h"
 #include "v8Window.h"
 
 #ifdef AVOCADO_NODE
@@ -49,6 +50,7 @@ void v8GraphicsService::initialize(Handle<Object> target) {
 	avo::v8Canvas::initialize(target);
 	avo::v8Font::initialize(target);
 	avo::v8Image::initialize(target);
+	avo::v8Sprite::initialize(target);
 	avo::v8Window::initialize(target);
 }
 
