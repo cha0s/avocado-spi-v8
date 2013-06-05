@@ -10,7 +10,7 @@ using namespace v8;
 namespace avo {
 
 v8Sprite::v8Sprite(Handle<Object> wrapper)
-	: sprite(sprite)
+	: sprite(NULL)
 {
 	if (NULL == this->sprite) {
 		this->sprite = Sprite::factoryManager.instance()->create();
