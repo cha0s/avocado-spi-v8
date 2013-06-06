@@ -174,8 +174,12 @@ v8::Handle<v8::Value> v8Sprite::SetRotation(const v8::Arguments &args) {
 		)));
 	}
 
+	Handle<Array> orientation = args[1].As<Array>();
+
 	spriteWrapper->sprite->setRotation(
-		args[0]->NumberValue()
+		args[0]->NumberValue(),
+		orientation->Get(0)->Int32Value(),
+		orientation->Get(1)->Int32Value()
 	);
 
 	return v8::Undefined();
