@@ -156,7 +156,6 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 	}
 
 	Handle<Array> position = args[0].As<Array>();
-	Handle<Array> clip = args[7].As<Array>();
 
 	fontWrapper->font->render(
 		position->Get(0)->Int32Value(),
@@ -166,11 +165,7 @@ v8::Handle<v8::Value> v8Font::Render(const v8::Arguments &args) {
 		args[3]->Int32Value(),
 		args[4]->Int32Value(),
 		args[5]->Int32Value(),
-		args[6]->Int32Value(),
-		clip->Get(0)->Int32Value(),
-		clip->Get(1)->Int32Value(),
-		clip->Get(2)->Int32Value(),
-		clip->Get(3)->Int32Value()
+		args[6]->NumberValue()
 	);
 
 	return v8::Undefined();

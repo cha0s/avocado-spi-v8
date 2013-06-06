@@ -127,7 +127,7 @@ v8::Handle<v8::Value> v8Canvas::DrawCircle(const v8::Arguments &args) {
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
 		args[4]->Uint32Value(),
-		args[5]->Uint32Value(),
+		args[5]->NumberValue(),
 		static_cast<GraphicsService::BlendMode>(args[6]->Uint32Value())
 	);
 
@@ -155,7 +155,7 @@ v8::Handle<v8::Value> v8Canvas::DrawFilledBox(const v8::Arguments &args) {
 		args[1]->Uint32Value(),
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
+		args[4]->NumberValue(),
 		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
@@ -183,7 +183,7 @@ v8::Handle<v8::Value> v8Canvas::DrawLine(const v8::Arguments &args) {
 		args[1]->Uint32Value(),
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
+		args[4]->NumberValue(),
 		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
@@ -211,7 +211,7 @@ v8::Handle<v8::Value> v8Canvas::DrawLineBox(const v8::Arguments &args) {
 		args[1]->Uint32Value(),
 		args[2]->Uint32Value(),
 		args[3]->Uint32Value(),
-		args[4]->Uint32Value(),
+		args[4]->NumberValue(),
 		static_cast<GraphicsService::BlendMode>(args[5]->Uint32Value())
 	);
 
@@ -233,7 +233,7 @@ v8::Handle<v8::Value> v8Canvas::Fill(const v8::Arguments &args) {
 		args[0]->Uint32Value(),
 		args[1]->Uint32Value(),
 		args[2]->Uint32Value(),
-		args[3]->Uint32Value()
+		args[3]->NumberValue()
 	);
 
 	return v8::Undefined();
