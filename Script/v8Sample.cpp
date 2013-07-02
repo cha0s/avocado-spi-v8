@@ -49,7 +49,9 @@ void v8Sample::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+#ifndef AVOCADO_NODE
 		V8::avocadoIsolate,
+#endif
 		FunctionTemplate::New(v8Sample::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);

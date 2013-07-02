@@ -19,7 +19,9 @@ v8Script::v8Script(v8::Handle<v8::Script> script)
 	HandleScope scope;
 
 	this->script = Persistent<v8::Script>::New(
+#ifndef AVOCADO_NODE
 		V8::avocadoIsolate,
+#endif
 		script
 	);
 }

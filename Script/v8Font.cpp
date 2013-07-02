@@ -32,7 +32,9 @@ void v8Font::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+#ifndef AVOCADO_NODE
 		V8::avocadoIsolate,
+#endif
 		FunctionTemplate::New(v8Font::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);

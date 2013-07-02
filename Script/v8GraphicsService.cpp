@@ -35,7 +35,9 @@ void v8GraphicsService::initialize(Handle<Object> target) {
 	HandleScope scope;
 
 	constructor_template = Persistent<FunctionTemplate>::New(
+#ifndef AVOCADO_NODE
 		V8::avocadoIsolate,
+#endif
 		FunctionTemplate::New(v8GraphicsService::New)
 	);
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);

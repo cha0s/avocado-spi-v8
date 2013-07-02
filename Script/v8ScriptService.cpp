@@ -45,7 +45,9 @@ v8ScriptService::v8ScriptService()
 	global->Set(String::New("requires_"), ObjectTemplate::New());
 
 	context = Persistent<Context>::New(
+#ifndef AVOCADO_NODE
 		V8::avocadoIsolate,
+#endif
 		Context::New(V8::avocadoIsolate, NULL, global)
 	);
 
