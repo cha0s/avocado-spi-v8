@@ -38,3 +38,6 @@ LIBS += -L../deps/v8 -lv8-avocado -lv8_snapshot-avocado
 win32 {
 	LIBS += -lshell32 -lws2_32 -lwinmm -ldl
 }
+
+# v8 is such a mess. Shameful.
+unix:QMAKE_CXXFLAGS -= -ansi -Werror

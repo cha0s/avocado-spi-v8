@@ -10,18 +10,14 @@ v8lib.commands += \
 	# V8
 	#
 	echo "Building v8..."; \
-	#
-	# Checkout the V8 git repository if it hasn't been yet.
-	#
 	cd v8 \
-	&& git apply --ignore-space-change --ignore-whitespace ../v8.patch \
 	; make dependencies
 	
 win32 {
 	v8lib.commands += && tools/mingw-generate-makefiles.sh
 }
 
-v8lib.commands += ; make -j4 ia32.release \
+v8lib.commands += ; werror=no make -j4 ia32.release \
 	&& cp out/ia32.release/obj.target/tools/gyp/libv8_base*.a libv8-avocado.a \
 	&& cp out/ia32.release/obj.target/tools/gyp/libv8_snapshot*.a libv8_snapshot-avocado.a; \ 
 	cd ../..; \
