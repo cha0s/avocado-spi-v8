@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8COUNTER_H
 #define AVOCADO_V8COUNTER_H
 
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "core/Timing/Counter.h"
+#include "Timing/Counter.h"
 
 namespace avo {
 

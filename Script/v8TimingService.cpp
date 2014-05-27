@@ -1,8 +1,8 @@
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "v8TimingService.h"
 
-#include "core/SpiiLoader.h"
+#include "SpiiLoader.h"
 
 #include "v8Counter.h"
 

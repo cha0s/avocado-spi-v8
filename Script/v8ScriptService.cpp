@@ -1,11 +1,11 @@
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include <boost/regex.hpp>
 
 #include "v8ScriptService.h"
 
-#include "core/FS.h"
-#include "core/Script/Script.h"
+#include "FS.h"
+#include "Script/Script.h"
 #include "v8Script.h"
 
 #include "v8CoreService.h"

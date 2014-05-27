@@ -1,8 +1,8 @@
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "v8CoreService.h"
 
-#include "core/SpiiLoader.h"
+#include "SpiiLoader.h"
 
 #ifdef AVOCADO_NODE
 #include <node.h>

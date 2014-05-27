@@ -1,8 +1,8 @@
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "v8GraphicsService.h"
 
-#include "core/SpiiLoader.h"
+#include "SpiiLoader.h"
 
 #include "v8Canvas.h"
 #include "v8Font.h"
