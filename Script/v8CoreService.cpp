@@ -1,3 +1,6 @@
+
+#include <iostream>
+
 #include "avocado-global.h"
 
 #include "v8CoreService.h"
