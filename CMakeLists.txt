@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 if(NOT DEFINED AVOCADO_CPP_CORE_DIRECTORY)
 	message(STATUS "Avocado CPP core will use the ./core directory by default...")
-	set(AVOCADO_CPP_CORE_DIRECTORY ./core)
+	set(AVOCADO_CPP_CORE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/core)
 endif()
 
 if(NOT EXISTS ${AVOCADO_CPP_CORE_DIRECTORY})
