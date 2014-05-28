@@ -7,6 +7,8 @@ string(REPLACE "-ansi -Wall -Werror" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS
 
 add_library(ScriptService-v8 SHARED
 	
+	implementSpi.cpp
+	
 	avocado-v8.cpp
 	ObjectWrap.cpp
 	
