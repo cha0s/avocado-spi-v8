@@ -11,7 +11,7 @@ add_custom_command(
 	COMMAND cp out/ia32.release/obj.target/tools/gyp/libv8_base.ia32.a ${CMAKE_CURRENT_BINARY_DIR}/libavocado-v8_base.ia32.a
 	COMMAND cp out/ia32.release/obj.target/tools/gyp/libv8_snapshot.a ${CMAKE_CURRENT_BINARY_DIR}/libavocado-v8_snapshot.a
 	
-	WORKING_DIRECTORY ../../deps/v8
+	WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/v8
 
 )
 

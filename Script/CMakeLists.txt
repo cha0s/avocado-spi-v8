@@ -55,3 +55,5 @@ if(WIN32)
 	)
 	
 endif()
+
+avocado_build_spii_name(ScriptService-v8)
