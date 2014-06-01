@@ -5,7 +5,9 @@
 
 #include "v8CoreService.h"
 
-#include "SpiiLoader.h"
+#include "FS.h"
+
+//#include "SpiiLoader.h"
 
 #ifdef AVOCADO_NODE
 #include <node.h>
@@ -15,7 +17,7 @@ using namespace v8;
 
 namespace avo {
 
-avo::SpiiLoader<avo::CoreService> coreServiceSpiiLoader;
+//avo::SpiiLoader<avo::CoreService> coreServiceSpiiLoader;
 
 v8CoreService::v8CoreService(Handle<Object> wrapper)
 {
@@ -38,7 +40,7 @@ void v8CoreService::initialize(Handle<Object> target) {
 	// Set methods.
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "close", v8CoreService::Close);
 
-	V8_SET_METHOD(constructor_template, "implementSpi", v8CoreService::ImplementSpi);
+//	V8_SET_METHOD(constructor_template, "implementSpi", v8CoreService::ImplementSpi);
 	V8_SET_METHOD(constructor_template, "%readResource", v8CoreService::ReadResource);
 	V8_SET_METHOD(constructor_template, "setExePath", v8CoreService::SetExePath);
 	V8_SET_METHOD(constructor_template, "setResourceRoot", v8CoreService::SetResourceRoot);
@@ -64,39 +66,39 @@ v8::Handle<v8::Value> v8CoreService::New(const v8::Arguments &args) {
 	return args.Holder();
 }
 
-v8::Handle<v8::Value> v8CoreService::ImplementSpi(const v8::Arguments &args) {
-	HandleScope scope;
-
-	boost::filesystem::path spiiPath = args[1]->IsUndefined() ?
-		FS::exePath()
-	:
-		V8::stringToStdString(args[1]->ToString())
-	;
-
-#ifdef AVOCADO_NODE
-	dlopen(
-		(spiiPath.string() + "/SPII/Core.node").c_str(), RTLD_NOW | RTLD_GLOBAL
-	);
-#endif
-
-	try {
-
-		// Attempt to load the SPII.
-		coreServiceSpiiLoader.implementSpi(
-			V8::stringToStdString(args[0]->ToString()),
-			spiiPath
-		);
-	}
-	catch (SpiiLoader<CoreService>::spi_implementation_error &e) {
-
-		// If it couldn't be loaded, throw an error.
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			e.what()
-		)));
-	}
-
-	return Undefined();
-}
+//v8::Handle<v8::Value> v8CoreService::ImplementSpi(const v8::Arguments &args) {
+//	HandleScope scope;
+//
+//	boost::filesystem::path spiiPath = args[1]->IsUndefined() ?
+//		FS::exePath()
+//	:
+//		V8::stringToStdString(args[1]->ToString())
+//	;
+//
+//#ifdef AVOCADO_NODE
+//	dlopen(
+//		(spiiPath.string() + "/SPII/Core.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+//	);
+//#endif
+//
+//	try {
+//
+//		// Attempt to load the SPII.
+//		coreServiceSpiiLoader.implementSpi(
+//			V8::stringToStdString(args[0]->ToString()),
+//			spiiPath
+//		);
+//	}
+//	catch (SpiiLoader<CoreService>::spi_implementation_error &e) {
+//
+//		// If it couldn't be loaded, throw an error.
+//		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
+//			e.what()
+//		)));
+//	}
+//
+//	return Undefined();
+//}
 
 v8::Handle<v8::Value> v8CoreService::ReadResource(const v8::Arguments& args) {
 	HandleScope scope;

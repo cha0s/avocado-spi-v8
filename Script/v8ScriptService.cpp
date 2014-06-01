@@ -1,12 +1,15 @@
 #include "avocado-global.h"
 
 #include <boost/regex.hpp>
+#include <map>
 
 #include "v8ScriptService.h"
 
 #include "FS.h"
 #include "Script/Script.h"
 #include "v8Script.h"
+
+#include "SpiiLoader.h"
 
 #include "v8CoreService.h"
 #include "v8GraphicsService.h"
@@ -21,14 +24,60 @@ namespace avo {
 
 AbstractFactory<v8ScriptService> *v8ScriptService::factory = new AbstractFactory<v8ScriptService>;
 
-#define INITIALIZE_SPI(name) { \
-    Handle<Object> name = Object::New(); \
-    Handle<Object> name ## Module = Object::New(); \
-    Handle<Object> name ## Exports = Object::New(); \
-    name ## Module->Set(String::NewSymbol("exports"), name ## Exports); \
-    name->Set(String::NewSymbol("module"), name ## Module); \
-    v8 ## name ## Service::initialize(name ## Exports); \
-    requires_->Set(String::NewSymbol(#name), name); }
+avo::SpiiLoader spiiLoader;
+
+v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
+	HandleScope scope;
+
+	std::string implementation = V8::stringToStdString(args[0]->ToString());
+	std::string type = V8::stringToStdString(args[1]->ToString());
+
+#ifdef AVOCADO_NODE
+	dlopen(
+		(spiiPath.string() + "/SPII/" + type + ".node").c_str(), RTLD_NOW | RTLD_GLOBAL
+	);
+#endif
+
+	try {
+
+		if ("Core" == type) {
+			spiiLoader.implementSpi<CoreService>(implementation);
+		}
+		else if ("Graphics" == type) {
+			spiiLoader.implementSpi<GraphicsService>(implementation);
+		}
+		else if ("Sound" == type) {
+			spiiLoader.implementSpi<SoundService>(implementation);
+		}
+		else if ("Timing" == type) {
+			spiiLoader.implementSpi<TimingService>(implementation);
+		}
+
+//		// Attempt to load the SPII.
+//		graphicsServiceSpiiLoader.implementSpi(
+//			V8::stringToStdString(args[0]->ToString()),
+//			spiiPath
+//		);
+	}
+	catch (SpiiLoader::spi_implementation_error &e) {
+
+		// If it couldn't be loaded, throw an error.
+		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
+			e.what()
+		)));
+	}
+
+	return Undefined();
+}
+
+#define INITIALIZE_SPI(name) {                                                 \
+    Handle<Object> name = Object::New();                                       \
+    Handle<Object> name ## Module = Object::New();                             \
+    Handle<Object> name ## Exports = Object::New();                            \
+    name ## Module->Set(String::NewSymbol("exports"), name ## Exports);        \
+    name->Set(String::NewSymbol("module"), name ## Module);                    \
+    v8 ## name ## Service::initialize(name ## Exports);                        \
+    requires_->Set(String::NewSymbol((string("%") + #name).c_str()), name); }
 
 v8ScriptService::v8ScriptService()
 	: ScriptService()
@@ -43,6 +92,8 @@ v8ScriptService::v8ScriptService()
 	Handle<ObjectTemplate> global = ObjectTemplate::New();
 
 	global->Set(String::New("requires_"), ObjectTemplate::New());
+
+	V8_SET_METHOD(global, "__implementSpi", ImplementSpi);
 
 	context = Persistent<Context>::New(
 		V8::avocadoIsolate,

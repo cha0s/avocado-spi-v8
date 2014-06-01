@@ -2,7 +2,7 @@
 
 #include "v8TimingService.h"
 
-#include "SpiiLoader.h"
+//#include "SpiiLoader.h"
 
 #include "v8Counter.h"
 
@@ -14,7 +14,7 @@ using namespace v8;
 
 namespace avo {
 
-avo::SpiiLoader<avo::TimingService> timingServiceSpiiLoader;
+//avo::SpiiLoader<avo::TimingService> timingServiceSpiiLoader;
 
 v8TimingService::v8TimingService(Handle<Object> wrapper)
 {
@@ -37,7 +37,7 @@ void v8TimingService::initialize(Handle<Object> target) {
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "close", v8TimingService::Close);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%sleep", v8TimingService::Sleep);
 
-	V8_SET_METHOD(constructor_template, "implementSpi", v8TimingService::ImplementSpi);
+//	V8_SET_METHOD(constructor_template, "implementSpi", v8TimingService::ImplementSpi);
 
 	target->Set(String::NewSymbol("TimingService"), constructor_template->GetFunction());
 
@@ -60,40 +60,40 @@ v8::Handle<v8::Value> v8TimingService::New(const v8::Arguments &args) {
 	return args.Holder();
 }
 
-v8::Handle<v8::Value> v8TimingService::ImplementSpi(const v8::Arguments &args) {
-	HandleScope scope;
-
-	boost::filesystem::path spiiPath = args[1]->IsUndefined() ?
-		FS::exePath()
-	:
-		V8::stringToStdString(args[1]->ToString())
-	;
-
-#ifdef AVOCADO_NODE
-	dlopen(
-		(spiiPath.string() + "/SPII/Timing.node").c_str(), RTLD_NOW | RTLD_GLOBAL
-	);
-#endif
-
-	try {
-
-		// Attempt to load the SPII.
-		timingServiceSpiiLoader.implementSpi(
-			V8::stringToStdString(args[0]->ToString()),
-			spiiPath
-		);
-	}
-	catch (SpiiLoader<TimingService>::spi_implementation_error &e) {
-
-		// If it couldn't be loaded, throw an error.
-		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
-			e.what()
-		)));
-	}
-
-	return Undefined();
-}
-
+//v8::Handle<v8::Value> v8TimingService::ImplementSpi(const v8::Arguments &args) {
+//	HandleScope scope;
+//
+//	boost::filesystem::path spiiPath = args[1]->IsUndefined() ?
+//		FS::exePath()
+//	:
+//		V8::stringToStdString(args[1]->ToString())
+//	;
+//
+//#ifdef AVOCADO_NODE
+//	dlopen(
+//		(spiiPath.string() + "/SPII/Timing.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+//	);
+//#endif
+//
+//	try {
+//
+//		// Attempt to load the SPII.
+//		timingServiceSpiiLoader.implementSpi(
+//			V8::stringToStdString(args[0]->ToString()),
+//			spiiPath
+//		);
+//	}
+//	catch (SpiiLoader<TimingService>::spi_implementation_error &e) {
+//
+//		// If it couldn't be loaded, throw an error.
+//		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
+//			e.what()
+//		)));
+//	}
+//
+//	return Undefined();
+//}
+//
 v8::Handle<v8::Value> v8TimingService::Close(const v8::Arguments &args) {
 	HandleScope scope;
 
