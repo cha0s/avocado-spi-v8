@@ -40,6 +40,7 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
 
 	try {
 
+		// Attempt to load the SPII.
 		if ("Core" == type) {
 			spiiLoader.implementSpi<CoreService>(implementation);
 		}
@@ -52,12 +53,6 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
 		else if ("Timing" == type) {
 			spiiLoader.implementSpi<TimingService>(implementation);
 		}
-
-//		// Attempt to load the SPII.
-//		graphicsServiceSpiiLoader.implementSpi(
-//			V8::stringToStdString(args[0]->ToString()),
-//			spiiPath
-//		);
 	}
 	catch (SpiiLoader::spi_implementation_error &e) {
 
@@ -70,13 +65,13 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
 	return Undefined();
 }
 
-#define INITIALIZE_SPI(name) {                                                 \
+#define INITIALIZE_SPI(name, Service) {                                                 \
     Handle<Object> name = Object::New();                                       \
     Handle<Object> name ## Module = Object::New();                             \
     Handle<Object> name ## Exports = Object::New();                            \
     name ## Module->Set(String::NewSymbol("exports"), name ## Exports);        \
     name->Set(String::NewSymbol("module"), name ## Module);                    \
-    v8 ## name ## Service::initialize(name ## Exports);                        \
+    Service::initialize(name ## Exports);                        \
     requires_->Set(String::NewSymbol((string("%") + #name).c_str()), name); }
 
 v8ScriptService::v8ScriptService()
@@ -106,10 +101,10 @@ v8ScriptService::v8ScriptService()
 		String::NewSymbol("requires_")
 	).As<Object>();
 
-	INITIALIZE_SPI(Core);
-	INITIALIZE_SPI(Graphics);
-	INITIALIZE_SPI(Sound);
-	INITIALIZE_SPI(Timing);
+	INITIALIZE_SPI(core, v8CoreService);
+	INITIALIZE_SPI(graphics, v8GraphicsService);
+	INITIALIZE_SPI(sound, v8SoundService);
+	INITIALIZE_SPI(timing, v8TimingService);
 
 	ScriptService::initialize();
 }
