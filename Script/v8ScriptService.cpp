@@ -41,16 +41,16 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
 	try {
 
 		// Attempt to load the SPII.
-		if ("Core" == type) {
+		if ("core" == type) {
 			spiiLoader.implementSpi<CoreService>(implementation);
 		}
-		else if ("Graphics" == type) {
+		else if ("graphics" == type) {
 			spiiLoader.implementSpi<GraphicsService>(implementation);
 		}
-		else if ("Sound" == type) {
+		else if ("sound" == type) {
 			spiiLoader.implementSpi<SoundService>(implementation);
 		}
-		else if ("Timing" == type) {
+		else if ("timing" == type) {
 			spiiLoader.implementSpi<TimingService>(implementation);
 		}
 	}
