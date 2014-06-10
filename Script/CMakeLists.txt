@@ -25,7 +25,6 @@ add_library(ScriptService-v8 SHARED
 	v8Window.cpp
 	
 	v8TimingService.cpp
-	v8Counter.cpp
 	
 	v8SoundService.cpp
 	v8Music.cpp

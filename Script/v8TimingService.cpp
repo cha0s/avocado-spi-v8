@@ -40,8 +40,6 @@ void v8TimingService::initialize(Handle<Object> target) {
 //	V8_SET_METHOD(constructor_template, "implementSpi", v8TimingService::ImplementSpi);
 
 	target->Set(String::NewSymbol("TimingService"), constructor_template->GetFunction());
-
-	v8Counter::initialize(target);
 }
 
 v8::Handle<v8::Value> v8TimingService::New(const v8::Arguments &args) {
