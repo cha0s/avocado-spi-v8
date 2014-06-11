@@ -2,8 +2,6 @@
 
 #include "v8TimingService.h"
 
-#include "v8Counter.h"
-
 #ifdef AVOCADO_NODE
 #include <node.h>
 #endif
