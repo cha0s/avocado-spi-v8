@@ -81,7 +81,7 @@ v8::Handle<v8::Value> v8GraphicsService::ImplementSpi(const v8::Arguments &args)
 	HandleScope scope;
 
 	dlopen(
-		(FS::exePath().string() + "/avocado-node/SPII/graphics.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+		(FS::exePath().string() + "/avocado-node/SPII/__graphics.node").c_str(), RTLD_NOW | RTLD_GLOBAL
 	);
 
 	try {

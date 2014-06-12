@@ -70,7 +70,7 @@ v8::Handle<v8::Value> v8SoundService::ImplementSpi(const v8::Arguments &args) {
 	HandleScope scope;
 
 	dlopen(
-		(FS::exePath().string() + "/avocado-node/SPII/sound.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+		(FS::exePath().string() + "/avocado-node/SPII/__sound.node").c_str(), RTLD_NOW | RTLD_GLOBAL
 	);
 
 	try {

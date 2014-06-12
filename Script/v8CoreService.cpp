@@ -76,7 +76,7 @@ v8::Handle<v8::Value> v8CoreService::ImplementSpi(const v8::Arguments &args) {
 	HandleScope scope;
 
 	dlopen(
-		(FS::exePath().string() + "/avocado-node/SPII/core.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+		(FS::exePath().string() + "/avocado-node/SPII/__core.node").c_str(), RTLD_NOW | RTLD_GLOBAL
 	);
 
 	try {
