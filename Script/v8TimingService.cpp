@@ -85,7 +85,7 @@ v8::Handle<v8::Value> v8TimingService::Sleep(const v8::Arguments &args) {
 extern "C" {
 	NODE_MODULE_EXPORT node::node_module_struct timing_module = {
 		NODE_STANDARD_MODULE_STUFF,
-		(node::addon_register_func)regfunc,
+		(node::addon_register_func) avo::v8TimingService::initialize,
 		"%timing"
 	};
 }

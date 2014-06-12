@@ -79,7 +79,7 @@ v8::Handle<v8::Value> v8SoundService::Close(const v8::Arguments &args) {
 extern "C" {
 	NODE_MODULE_EXPORT node::node_module_struct sound_module = {
 		NODE_STANDARD_MODULE_STUFF,
-		(node::addon_register_func)regfunc,
+		(node::addon_register_func) avo::v8SoundService::initialize,
 		"%sound"
 	};
 }

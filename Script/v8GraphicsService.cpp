@@ -91,7 +91,7 @@ Persistent<FunctionTemplate> v8GraphicsService::constructor_template;
 extern "C" {
 	NODE_MODULE_EXPORT node::node_module_struct graphics_module = {
 		NODE_STANDARD_MODULE_STUFF,
-		(node::addon_register_func)regfunc,
+		(node::addon_register_func) avo::v8GraphicsService::initialize,
 		"%graphics"
 	};
 }
