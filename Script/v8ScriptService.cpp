@@ -72,7 +72,7 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
     name ## Module->Set(String::NewSymbol("exports"), name ## Exports);        \
     name->Set(String::NewSymbol("module"), name ## Module);                    \
     Service::initialize(name ## Exports);                        \
-    requires_->Set(String::NewSymbol((string("%") + #name).c_str()), name); }
+    requires_->Set(String::NewSymbol((string("__") + #name).c_str()), name); }
 
 v8ScriptService::v8ScriptService()
 	: ScriptService()
