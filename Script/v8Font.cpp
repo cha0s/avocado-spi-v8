@@ -1,4 +1,4 @@
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "v8Canvas.h"
 #include "v8Font.h"

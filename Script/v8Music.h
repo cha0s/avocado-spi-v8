@@ -1,9 +1,9 @@
 #ifndef AVOCADO_V8MUSIC_H
 #define AVOCADO_V8MUSIC_H
 
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
-#include "core/Sound/Music.h"
+#include "Sound/Music.h"
 #include "ObjectWrap.h"
 #include "avocado-v8.h"
 

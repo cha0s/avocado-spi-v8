@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8TIMINGSERVICE_H
 #define AVOCADO_V8TIMINGSERVICE_H
 
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "core/Timing/TimingService.h"
+#include "Timing/TimingService.h"
 
 namespace avo {
 

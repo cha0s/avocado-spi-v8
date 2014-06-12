@@ -1,11 +1,11 @@
 #ifndef AVOCADO_V8CANVAS_H
 #define AVOCADO_V8CANVAS_H
 
-#include "core/avocado-global.h"
+#include "avocado-global.h"
 
 #include "avocado-v8.h"
 #include "ObjectWrap.h"
-#include "core/Graphics/Canvas.h"
+#include "Graphics/Canvas.h"
 
 namespace avo {
 
