@@ -70,14 +70,15 @@ v8::Handle<v8::Value> v8SoundService::ImplementSpi(const v8::Arguments &args) {
 	HandleScope scope;
 
 	dlopen(
-		(FS::exePath().string() + "/SPII/sound.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+		(FS::exePath().string() + "/avocado-node/SPII/sound.node").c_str(), RTLD_NOW | RTLD_GLOBAL
 	);
 
 	try {
 
 		// Attempt to load the SPII.
 		spiiLoader.implementSpi<avo::SoundService>(
-			V8::stringToStdString(args[0]->ToString())
+			V8::stringToStdString(args[0]->ToString()),
+			FS::exePath().string() + "/avocado-node"
 		);
 	}
 	catch (SpiiLoader::spi_implementation_error &e) {
@@ -113,13 +114,5 @@ v8::Handle<v8::Value> v8SoundService::Close(const v8::Arguments &args) {
 
 
 #ifdef AVOCADO_NODE
-
-extern "C" {
-	NODE_MODULE_EXPORT node::node_module_struct sound_module = {
-		NODE_STANDARD_MODULE_STUFF,
-		(node::addon_register_func) avo::v8SoundService::initialize,
-		"%sound"
-	};
-}
-
+NODE_MODULE(__sound, avo::v8SoundService::initialize)
 #endif
