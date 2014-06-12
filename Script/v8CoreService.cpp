@@ -12,7 +12,7 @@
 #include <node.h>
 #include "SpiiLoader.h"
 
-avo::SpiiLoader<avo::CoreService> spiiLoader;
+avo::SpiiLoader spiiLoader;
 
 #endif
 
@@ -82,11 +82,11 @@ v8::Handle<v8::Value> v8CoreService::ImplementSpi(const v8::Arguments &args) {
 	try {
 
 		// Attempt to load the SPII.
-		spiiLoader.implementSpi(
+		spiiLoader.implementSpi<avo::CoreService>(
 			V8::stringToStdString(args[0]->ToString())
 		);
 	}
-	catch (SpiiLoader<CoreService>::spi_implementation_error &e) {
+	catch (SpiiLoader::spi_implementation_error &e) {
 
 		// If it couldn't be loaded, throw an error.
 		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
