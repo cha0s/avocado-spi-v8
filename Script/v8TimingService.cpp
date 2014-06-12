@@ -3,7 +3,12 @@
 #include "v8TimingService.h"
 
 #ifdef AVOCADO_NODE
+
 #include <node.h>
+#include "SpiiLoader.h"
+
+avo::SpiiLoader<avo::TimingService> spiiLoader;
+
 #endif
 
 using namespace v8;
@@ -28,6 +33,10 @@ void v8TimingService::initialize(Handle<Object> target) {
 	constructor_template->InstanceTemplate()->SetInternalFieldCount(1);
 	constructor_template->SetClassName(String::NewSymbol("TimingService"));
 
+#ifdef AVOCADO_NODE
+	V8_SET_METHOD(constructor_template, "implementSpi", v8TimingService::ImplementSpi);
+#endif
+
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "close", v8TimingService::Close);
 	V8_SET_PROTOTYPE_METHOD(constructor_template, "%sleep", v8TimingService::Sleep);
 
@@ -49,6 +58,35 @@ v8::Handle<v8::Value> v8TimingService::New(const v8::Arguments &args) {
 
 	return args.Holder();
 }
+
+#ifdef AVOCADO_NODE
+
+v8::Handle<v8::Value> v8TimingService::ImplementSpi(const v8::Arguments &args) {
+	HandleScope scope;
+
+	dlopen(
+		(FS::exePath().string() + "/SPII/timing.node").c_str(), RTLD_NOW | RTLD_GLOBAL
+	);
+
+	try {
+
+		// Attempt to load the SPII.
+		spiiLoader.implementSpi(
+			V8::stringToStdString(args[0]->ToString())
+		);
+	}
+	catch (SpiiLoader<TimingService>::spi_implementation_error &e) {
+
+		// If it couldn't be loaded, throw an error.
+		return ThrowException(v8::Exception::ReferenceError(String::NewSymbol(
+			e.what()
+		)));
+	}
+
+	return Undefined();
+}
+
+#endif
 
 v8::Handle<v8::Value> v8TimingService::Close(const v8::Arguments &args) {
 	HandleScope scope;
