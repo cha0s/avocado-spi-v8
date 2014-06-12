@@ -34,7 +34,7 @@ v8::Handle<v8::Value> ImplementSpi(const v8::Arguments &args) {
 
 #ifdef AVOCADO_NODE
 	dlopen(
-		(spiiPath.string() + "/SPII/" + type + ".node").c_str(), RTLD_NOW | RTLD_GLOBAL
+		(FS::exePath().string() + "/SPII/" + type + ".node").c_str(), RTLD_NOW | RTLD_GLOBAL
 	);
 #endif
 
